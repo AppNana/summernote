@@ -364,10 +364,6 @@ export default class Editor {
       this.context.triggerEvent('blur', event);
     }).on('mousedown', (event) => {
       this.context.triggerEvent('mousedown', event);
-    }).on('mouseup', (event) => {
-      this.setLastRange();
-      this.history.recordUndo();
-      this.context.triggerEvent('mouseup', event);
     }).on('scroll', (event) => {
       this.context.triggerEvent('scroll', event);
     }).on('paste', (event) => {
@@ -378,6 +374,14 @@ export default class Editor {
       if (this.isLimited(0) && this.snapshot) {
         this.history.applySnapshot(this.snapshot);
       }
+    });
+
+    const _this = this;
+
+    $(document).on('mouseup', (event) => {
+      _this.setLastRange();
+      _this.history.recordUndo();
+      _this.context.triggerEvent('mouseup', event);
     });
 
     this.$editable.attr('spellcheck', this.options.spellCheck);
@@ -536,6 +540,51 @@ export default class Editor {
         this.lastRange = range.createFromBodyElement(this.editable);
       }
     }
+
+    this.updateLinkButton();
+  }
+
+  /**
+   * 更新链接按钮状态
+   *
+   */
+  updateLinkButton() {
+    const lastRange = this.getLastRange();
+    var hasLink = false;
+
+    // 选中的首元素是 a 标签
+    if (lastRange.sc.parentElement.tagName.toLowerCase() === "a") {
+      hasLink = true;
+    }
+
+    // 选中的尾元素是 a 标签
+    if (lastRange.ec.parentElement.tagName.toLowerCase() === "a") {
+      hasLink = true;
+    }
+
+    const linkButton = this.$editor.find(".note-insert .note-icon-link").parent();
+
+    setTimeout(() => {
+      // 选中状态
+      if (lastRange.sc !== lastRange.ec || lastRange.so !== lastRange.eo) {
+        linkButton.removeClass("disabled").removeAttr("disabled");
+
+        if (hasLink || this.lastRange.isOnAnchor()) {
+          linkButton.addClass("active");
+        }
+        else {
+          linkButton.removeClass("active");
+        }
+      }
+      // 未选中状态
+      else {
+        linkButton.addClass("disabled").attr("disabled", "disabled").removeClass("active");
+      }
+    }, 0);
+
+    // console.log(this.$editor.find(".note-insert .note-icon-link").parent());
+    // console.log(lastRange);
+    // console.log(lastRange.sc !== lastRange.ec || lastRange.so !== lastRange.eo);
   }
 
   /**
