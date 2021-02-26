@@ -15,9 +15,26 @@
     $(document).ready(function() {
       $('.summernote').summernote({
         height: 300,
-        tabsize: 2
+        tabsize: 2,
+        callbacks: {
+          onFocus: function() {
+            json2App(JSON.stringify({ jsontype: "summernode-focus" }));
+          },
+          onBlur: function() {
+            json2App(JSON.stringify({ jsontype: "summernode-blur" }));
+          }
+        }
       });
     });
+
+    function json2App(json) {
+      if (window.MRichEditor && window.MRichEditor.summernote) {
+        window.MRichEditor.summernote(json);
+      }
+      else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.summernote && window.webkit.messageHandlers.summernote.postMessage) {
+        window.webkit.messageHandlers.summernote.postMessage(json);
+      }
+    }
   </script>
 </head>
 <body>

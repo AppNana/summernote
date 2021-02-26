@@ -542,6 +542,45 @@ export default class Editor {
     }
 
     this.updateLinkButton();
+
+    // 给 app 发送状态
+    const txtStatus = {
+      jsontype: "text-style",
+      bold: false,
+      italic: false,
+      underline: false,
+      deleteline: false,
+      ol: false,
+      ul: false,
+      left: false,
+      center: false,
+      right: false,
+      h1: false,
+      h2: false,
+    };
+
+    const selection = document.getSelection();
+    txtStatus.empty = this.isEmpty();
+    txtStatus.selecttiontext = selection.toString();
+
+    if (selection && selection.focusNode && selection.focusNode.parentNode) {
+      const styles         = window.getComputedStyle(selection.focusNode.parentNode);
+      const selectJQ       = $(selection.focusNode.parentNode);
+      txtStatus.bold       = styles.fontWeight > 400;
+      txtStatus.left       = styles.textAlign     .indexOf("left"     ) > -1;
+      txtStatus.center     = styles.textAlign     .indexOf("center"   ) > -1;
+      txtStatus.right      = styles.textAlign     .indexOf("right"    ) > -1;
+      txtStatus.italic     = styles.fontStyle     .indexOf("italic"   ) > -1;
+      txtStatus.underline  = styles.textDecoration.indexOf("underline") > -1;
+      txtStatus.deleteline = styles.textDecoration.indexOf("overline" ) > -1;
+      txtStatus.ol         = selectJQ.is("ol") || selectJQ.is("ol *");
+      txtStatus.ul         = selectJQ.is("ul") || selectJQ.is("ul *");
+      txtStatus.h1         = selectJQ.is("h1") || selectJQ.is("h1 *");
+      txtStatus.h2         = selectJQ.is("h2") || selectJQ.is("h2 *");
+    }
+
+    console.log(txtStatus);
+    this.json2App(JSON.stringify(txtStatus));
   }
 
   /**
@@ -1050,5 +1089,17 @@ export default class Editor {
    */
   normalizeContent() {
     this.$editable[0].normalize();
+  }
+
+  /**
+   * send json to app
+   */
+  json2App(json) {
+    if (window.MRichEditor && window.MRichEditor.summernote) {
+      window.MRichEditor.summernote(json);
+    }
+    else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.summernote && window.webkit.messageHandlers.summernote.postMessage) {
+      window.webkit.messageHandlers.summernote.postMessage(json);
+    }
   }
 }
