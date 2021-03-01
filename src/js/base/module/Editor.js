@@ -362,7 +362,7 @@ export default class Editor {
       this.context.triggerEvent('focus', event);
     }).on('blur', (event) => {
       this.context.triggerEvent('blur', event);
-    }).on('mousedown', (event) => {
+    }).on('mousedown touchstart', (event) => {
       this.context.triggerEvent('mousedown', event);
     }).on('scroll', (event) => {
       this.context.triggerEvent('scroll', event);
@@ -378,7 +378,7 @@ export default class Editor {
 
     const _this = this;
 
-    $(document).on('mouseup', (event) => {
+    $(document).on('mouseup touchend', (event) => {
       _this.setLastRange();
       _this.history.recordUndo();
       _this.context.triggerEvent('mouseup', event);
