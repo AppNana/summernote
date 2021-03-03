@@ -14,6 +14,12 @@
   <script type="text/javascript">
     $(document).ready(function() {
       $('.summernote').summernote({
+        toolbar:[
+          ['insert',['picture','link','video','table', 'hr']],
+          ['font',['fontname','fontsize','color','forecolor', 'backcolor', 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+          ['para',['style','ol','ul', 'paragraph', 'height']],
+          ['other',['fullscreen', 'codeview', 'undo', 'redo', 'help']]
+        ],
         height: 300,
         tabsize: 2,
         callbacks: {

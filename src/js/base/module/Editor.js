@@ -566,20 +566,19 @@ export default class Editor {
     if (selection && selection.focusNode && selection.focusNode.parentNode) {
       const styles         = window.getComputedStyle(selection.focusNode.parentNode);
       const selectJQ       = $(selection.focusNode.parentNode);
-      txtStatus.bold       = styles.fontWeight > 400;
       txtStatus.left       = styles.textAlign     .indexOf("left"     ) > -1;
       txtStatus.center     = styles.textAlign     .indexOf("center"   ) > -1;
       txtStatus.right      = styles.textAlign     .indexOf("right"    ) > -1;
-      txtStatus.italic     = styles.fontStyle     .indexOf("italic"   ) > -1;
-      txtStatus.underline  = styles.textDecoration.indexOf("underline") > -1;
-      txtStatus.deleteline = styles.textDecoration.indexOf("overline" ) > -1;
-      txtStatus.ol         = selectJQ.is("ol") || selectJQ.is("ol *");
-      txtStatus.ul         = selectJQ.is("ul") || selectJQ.is("ul *");
-      txtStatus.h1         = selectJQ.is("h1") || selectJQ.is("h1 *");
-      txtStatus.h2         = selectJQ.is("h2") || selectJQ.is("h2 *");
+      txtStatus.bold       = selectJQ.is("b"     ) || selectJQ.is("b *"     );
+      txtStatus.italic     = selectJQ.is("i"     ) || selectJQ.is("i *"     );
+      txtStatus.underline  = selectJQ.is("u"     ) || selectJQ.is("u *"     );
+      txtStatus.deleteline = selectJQ.is("strike") || selectJQ.is("strike *");
+      txtStatus.ol         = selectJQ.is("ol"    ) || selectJQ.is("ol *"    );
+      txtStatus.ul         = selectJQ.is("ul"    ) || selectJQ.is("ul *"    );
+      txtStatus.h1         = selectJQ.is("h1"    ) || selectJQ.is("h1 *"    );
+      txtStatus.h2         = selectJQ.is("h2"    ) || selectJQ.is("h2 *"    );
     }
 
-    console.log(txtStatus);
     this.json2App(JSON.stringify(txtStatus));
   }
 
