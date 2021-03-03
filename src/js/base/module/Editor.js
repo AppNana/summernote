@@ -378,7 +378,7 @@ export default class Editor {
 
     const _this = this;
 
-    $(document).on('mouseup touchend', (event) => {
+    $(document).on('mouseup touchend contextmenu', (event) => {
       _this.setLastRange();
       _this.history.recordUndo();
       _this.context.triggerEvent('mouseup', event);
