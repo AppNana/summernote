@@ -52,5 +52,3 @@ selenium-debug.log
 # direnv
 .envrc
 .env
-
-.huskey
