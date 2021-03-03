@@ -11,6 +11,10 @@ $img-margin-right: 10px;
 .note-editor {
   position: relative;
 
+  a {
+    text-decoration: underline;
+  }
+
   // dropzone
   $dropzone-color: lightskyblue;
   $dropzone-active-color: darken($dropzone-color, 30);
