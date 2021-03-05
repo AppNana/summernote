@@ -557,6 +557,7 @@ export default class Editor {
       right: false,
       h1: false,
       h2: false,
+      href: '',
     };
 
     const selection = document.getSelection();
@@ -577,6 +578,7 @@ export default class Editor {
       txtStatus.ul         = selectJQ.is("ul"    ) || selectJQ.is("ul *"    );
       txtStatus.h1         = selectJQ.is("h1"    ) || selectJQ.is("h1 *"    );
       txtStatus.h2         = selectJQ.is("h2"    ) || selectJQ.is("h2 *"    );
+      txtStatus.href       = selectJQ.is("a"     )  ? selectJQ.attr("href") : selectJQ.parents("a").attr("href");
     }
 
     this.json2App(JSON.stringify(txtStatus));
